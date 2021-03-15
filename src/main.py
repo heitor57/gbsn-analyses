@@ -19,7 +19,7 @@ if db.users.estimated_document_count()>0:
     print(len(evaluated_users_id))
 
     users_to_evaluate_id = set()
-    evaluated_users.rewind()
+    evaluated_users = db.users.find({"invalid" : { "$exists" : False }}, {'steamid':1, 'friendslist':1 ,'_id':0}).batch_size(batch_size)
     users_to_evaluate_id_buffer = list()
     for i in tqdm.tqdm(evaluated_users):
         users_to_evaluate_id_buffer.extend([j['steamid'] for j in i['friendslist']['friends']])
@@ -50,7 +50,9 @@ while len(users_to_evaluate_id) > 0 and num_iterations < max_num_iterations:
         user_to_evaluate_id = users_to_evaluate_id.pop(np.random.randint(0,len(users_to_evaluate_id)))
         # user_to_evaluate_id = users_to_evaluate_id.pop(0)
         num_iterations += 1
+        evaluated_users_id.add(user_to_evaluate_id)
         print(num_iterations,user_to_evaluate_id,len(users_to_evaluate_id),len(evaluated_users_id))
+
         response = api.call('ISteamUser.GetFriendList', relationship='friend',steamid=user_to_evaluate_id)
 
         user_data = {}
@@ -60,9 +62,9 @@ while len(users_to_evaluate_id) > 0 and num_iterations < max_num_iterations:
         # print(response)
         # start_users_ids.append(response['response']['steamid'])
         
-        evaluated_users_id.add(user_to_evaluate_id)
         users_to_evaluate_id.extend(list(set([i['steamid'] for i in response['friendslist']['friends']])-evaluated_users_id))
     except Exception as e:
+        print(e)
         db['users'].insert_one({'steamid': user_to_evaluate_id,'invalid':True})
 
 
