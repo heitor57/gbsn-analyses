@@ -1,4 +1,5 @@
 from steam import webapi
+import numpy as np
 import tqdm
 import time
 from pymongo import MongoClient
@@ -6,6 +7,7 @@ import utils
 
 max_num_iterations = 90000
 batch_size = 10000
+construction_buffer_max_size = 10000
 
 api = utils.create_api()
 
@@ -13,14 +15,20 @@ db = utils.start_db()
 
 if db.users.estimated_document_count()>0:
     evaluated_users = db.users.find({}, {'steamid':1, 'friendslist':1 ,'_id':0}).batch_size(batch_size)
-    evaluated_users_id = set([i['steamid'] for i in evaluated_users])
+    evaluated_users_id = {i['steamid'] for i in evaluated_users}
     print(len(evaluated_users_id))
 
     users_to_evaluate_id = set()
     evaluated_users.rewind()
+    users_to_evaluate_id_buffer = list()
     for i in tqdm.tqdm(evaluated_users):
-        # users_to_evaluate_id.union([j['steamid'] for j in i['friendslist']['friends']])
-        users_to_evaluate_id = users_to_evaluate_id | {j['steamid'] for j in i['friendslist']['friends']}
+        users_to_evaluate_id_buffer.extend([j['steamid'] for j in i['friendslist']['friends']])
+        if len(users_to_evaluate_id_buffer) >= construction_buffer_max_size:
+            users_to_evaluate_id |= set(users_to_evaluate_id_buffer)
+            users_to_evaluate_id_buffer = []
+    if len(users_to_evaluate_id_buffer)>0:
+        users_to_evaluate_id |= set(users_to_evaluate_id_buffer)
+        users_to_evaluate_id_buffer = []
 
     print(len(users_to_evaluate_id))
     users_to_evaluate_id = list(users_to_evaluate_id - evaluated_users_id)
