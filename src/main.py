@@ -83,6 +83,7 @@ while len(users_to_evaluate_id_set) > 0 and num_iterations < max_num_iterations:
         np.random.randint(0, len(users_to_evaluate_id_list)))
     users_to_evaluate_id_set -= set([user_to_evaluate_id])
     num_iterations += 1
+    print(num_iterations,len(users_to_evaluate_id_list),len(evaluated_users_id),user_to_evaluate_id)
     user_data = get_user_data(user_to_evaluate_id)
     db['users'].insert_one(user_data)
     evaluated_users_id.add(user_data['steamid'])
@@ -95,4 +96,3 @@ while len(users_to_evaluate_id_set) > 0 and num_iterations < max_num_iterations:
         friends -= users_to_evaluate_id_set
         users_to_evaluate_id_list.extend(list(friends))
         users_to_evaluate_id_set |= friends
-        # users_to_evaluate_id_set |= friends
