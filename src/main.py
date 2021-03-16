@@ -6,12 +6,15 @@ import tqdm
 import time
 from pymongo import MongoClient
 import utils
+import argparse
 
-num_processes = 1
-num_max_tasks = 1
-max_num_iterations = 30000
-batch_size = 10000
-construction_buffer_max_size = 10000
+parser = argparse.ArgumentParser(prog='Steam users crawler')
+parser.add_argument('--max_num_iterations',type=int,help='Maximum number of iterations to do at crawling',default=30000)
+parser.add_argument('--batch_size',type=int,help='Database cursor batch size',default=10000)
+parser.add_argument('--construction_buffer_max_size',type=int,help='Size of a buffer used to collect candidate users to be evaluated',default=10000)
+
+args = parser.parse_args()
+
 
 api = utils.create_api()
 
@@ -21,7 +24,7 @@ if db.users.estimated_document_count() > 0:
     evaluated_users = db.users.find({}, {
         'steamid': 1,
         '_id': 0
-    }).batch_size(batch_size)
+    }).batch_size(args.batch_size)
     evaluated_users_id = {i['steamid'] for i in evaluated_users}
     # assert("76561198155702016" in evaluated_users_id)
     print('Number of evaluated users',len(evaluated_users_id))
@@ -35,12 +38,12 @@ if db.users.estimated_document_count() > 0:
         'steamid': 1,
         'friendslist': 1,
         '_id': 0
-    }).batch_size(batch_size)
+    }).batch_size(args.batch_size)
     users_to_evaluate_id_buffer = list()
     for i in tqdm.tqdm(evaluated_users):
         users_to_evaluate_id_buffer.extend(
             [j['steamid'] for j in i['friendslist']['friends']])
-        if len(users_to_evaluate_id_buffer) >= construction_buffer_max_size:
+        if len(users_to_evaluate_id_buffer) >= args.construction_buffer_max_size:
             users_to_evaluate_id_set |= set(users_to_evaluate_id_buffer)
             users_to_evaluate_id_buffer = []
     if len(users_to_evaluate_id_buffer) > 0:
@@ -78,7 +81,7 @@ def get_user_data(user_id):
 
 num_iterations = 0
 
-while len(users_to_evaluate_id_set) > 0 and num_iterations < max_num_iterations:
+while len(users_to_evaluate_id_set) > 0 and num_iterations < args.max_num_iterations:
     user_to_evaluate_id = users_to_evaluate_id_list.pop(
         np.random.randint(0, len(users_to_evaluate_id_list)))
     users_to_evaluate_id_set -= set([user_to_evaluate_id])
