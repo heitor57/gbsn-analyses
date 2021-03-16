@@ -10,7 +10,11 @@ api = utils.create_api()
 db = utils.start_db()
 
 buffer_size = 100
-steamids = db.users.find({'profileurl':{"$exists":False}}, {'steamid':1, '_id':0})
+steamids = db.users.find({'invalid':{"$exists":False},'profileurl':{"$exists":False}}, {'steamid':1, '_id':0})
+print('Users to update',steamids.count())
+
+steamids = db.users.find({'invalid':{"$exists":False},'profileurl':{"$exists":False}}, {'steamid':1, '_id':0})
+
 
 # print(len(list(steamids)))
 
@@ -22,7 +26,7 @@ for steamid in steamids:
     if len(ids_buffer) == buffer_size:
         print("call")
         response = api.call('ISteamUser.GetPlayerSummaries',steamids=','.join(ids_buffer))
-        print(response)
+        # print(response)
         for player in response['response']['players']:
             try:
                 steamid = player.pop('steamid')
