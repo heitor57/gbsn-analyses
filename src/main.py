@@ -66,18 +66,6 @@ else:
     users_to_evaluate_id = start_users_ids
     evaluated_users_id = set()
 
-def get_user_data(user_id):
-    try:
-        response = api.call('ISteamUser.GetFriendList',
-                            relationship='friend',
-                            steamid=user_id)
-        user_data = {}
-        user_data.update(response)
-        user_data['steamid'] = user_to_evaluate_id
-        return user_data
-    except Exception as e:
-        print(e)
-        return {'steamid': user_id, 'invalid': True}
 
 num_iterations = 0
 
@@ -87,7 +75,7 @@ while len(users_to_evaluate_id_set) > 0 and num_iterations < args.max_num_iterat
     users_to_evaluate_id_set -= set([user_to_evaluate_id])
     num_iterations += 1
     print(num_iterations,len(users_to_evaluate_id_list),len(evaluated_users_id),user_to_evaluate_id)
-    user_data = get_user_data(user_to_evaluate_id)
+    user_data = utils.get_user_data(api,user_to_evaluate_id)
     db['users'].insert_one(user_data)
     evaluated_users_id.add(user_data['steamid'])
     if "friendslist" in user_data:
