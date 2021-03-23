@@ -1,4 +1,5 @@
 import numpy as np
+import argparse
 import utils
 from scipy import *
 import igraph
@@ -9,9 +10,6 @@ import scipy.optimize
 from sympy import *
 import graph
 
-# k,a = symbols('k a')
-# fit_function = k**a
-# lambda_fit_function = lambdify([k,a],fit_function)
 fit_function = lambda k,a: k**a
 
 db = utils.start_db()

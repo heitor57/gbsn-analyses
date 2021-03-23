@@ -7,7 +7,7 @@ import utils
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--game',
+parser.add_argument('--app',
                     type=str,
                     default='The Elder Scrolls III: Morrowind')
 args = parser.parse_args()
@@ -15,7 +15,7 @@ args = parser.parse_args()
 db = utils.start_db()
 
 # appsids = db.apps.find({'reviews':{"$exists":False}}, {'appid':1, '_id':0})
-app = db.apps.find_one({'name': args.game})
+app = db.apps.find_one({'name': args.app})
 
 appid = app['appid']
 print(app['name'])

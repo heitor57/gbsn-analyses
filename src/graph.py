@@ -1,7 +1,9 @@
 
+import numpy as np
 import igraph
 import scipy.optimize
 import matplotlib.pyplot as plt
+
 
 def get_graph_infos(g):
     infos = {}
@@ -18,6 +20,7 @@ def get_graph_infos(g):
     infos['Girth'] = g.girth()
     return infos
 def plot_degree_distribution(g,type_=None):
+    fit_function = lambda k, a: k**a
     fig, ax = plt.subplots()
     # max_degree = max(g.degree())
     values, counts = np.unique(g.degree(), return_counts=True)
