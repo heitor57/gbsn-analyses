@@ -22,7 +22,7 @@ app = db.apps.find_one({'name': args.game})
 # }).batch_size(args.batch_size)
 # evaluated_users_id = {i['steamid'] for i in evaluated_users}
 
-reviews = db.reviews.find({'appid':app['appid']})
+reviews = db.reviews.find({'appid':app['appid']},no_cursor_timeout=True)
 
 
 evaluated_users = db.users.find({}, {
