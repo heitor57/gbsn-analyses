@@ -49,6 +49,8 @@ for user in tqdm(
     g.add_vertices(user['steamid'])
     vertexes.add(user['steamid'])
 
+_buffer = []
+_buffer_max_size = 10000
 for user in tqdm(
         db.users.find(
             {
@@ -62,16 +64,19 @@ for user in tqdm(
                 '_id': 0,
                 'steamid': 1,
                 'friendslist': 1
-            }).batch_size(10000)):
-    # print(user['friendslist']['friends'])
+            }).batch_size(3000)):
     try:
-        g.add_edges([(user['steamid'], i) for i in {
-            friend['steamid'] for friend in user['friendslist']['friends']
-        }.intersection(vertexes)])
-        # g.add_edges([(user['steamid'],friend['steamid']) for friend in user['friendslist']['friends']])
+        _buffer.extend([(user['steamid'],i) for i in {friend['steamid'] for friend in user['friendslist']['friends']}.intersection(vertexes)])
+        if len(_buffer) >= _buffer_max_size:
+            g.add_edges(_buffer)
+            _buffer=[]
     except Exception as e:
         print(e)
         pass
+
+if len(_buffer) > 0:
+    g.add_edges(_buffer)
+    _buffer=[]
 
 print("Graph created")
 

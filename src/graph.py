@@ -10,6 +10,8 @@ def get_graph_infos(g):
     infos['Number of vertices'] = g.vcount()
     infos['Number of edges'] = g.ecount()
     infos['Mean Degree'] = np.mean(g.degree())
+    infos['Min Degree'] = np.min(g.degree())
+    infos['Max Degree'] = np.max(g.degree())
     infos['Density'] = g.density(loops=False)
     infos['Sparsity'] = 1-g.density(loops=False)
     # infos['c'] = transitivity_undirected
