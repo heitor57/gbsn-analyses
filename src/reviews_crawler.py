@@ -33,19 +33,30 @@ cursor = '*'
     # db.reviews.insert_many(response['reviews'])
 # except:
     # traceback.print_exc()
+request_parameters = {
+    'json': '1',
+    'language': 'all',  
+    'filter': 'recent',
+    'review_type': 'all', 
+    'purchase_type': 'all', 
+    'num_per_page': '100',  
+    'cursor':'*'
+}
+
+
 is_end = False
-num_per_page = 100
+# num_per_page = 100
 while not is_end:
-    print(cursor)
     try:
-        s = f'https://store.steampowered.com/appreviews/{appid}?json=1&cursor={cursor}&filter=recent&num_per_page={num_per_page}'
-        print(s)
-        response = requests.get(url=s)
+        s = f'https://store.steampowered.com/appreviews/{appid}'
+        response = requests.get(url=s,params=request_parameters)
+        print(response.url)
         response = response.json()
-        if cursor == urllib.parse.quote(response["cursor"]):
-            raise SystemError("Loop")
-        cursor = urllib.parse.quote(response["cursor"])
-        is_end = not (response['query_summary']['num_reviews'] == num_per_page)
+        if request_parameters['cursor'] == response["cursor"]:
+            print("Loop, END")
+            break
+        request_parameters['cursor'] = response["cursor"]
+        # is_end = not (response['query_summary']['num_reviews'] == num_per_page)
         # print(response)
         for review in response['reviews']:
             review['appid'] = appid
