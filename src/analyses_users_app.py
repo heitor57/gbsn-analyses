@@ -87,3 +87,8 @@ fig = graph.plot_degree_distribution(g)
 fig.savefig(f'degree_distribution_app_{args.app}.png')
 fig = graph.plot_degree_distribution(g, type_='log')
 fig.savefig(f'degree_distribution_log_app_{args.app}.png')
+
+
+
+igraph.plot(g, target=f'users_graph_app_{args.app}.png',vertex_size=1)
+# out.save()
