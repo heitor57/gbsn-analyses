@@ -11,9 +11,9 @@ from sympy import *
 import graph
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--app',
+parser.add_argument('--apps',
                     type=str,
-                    default='The Elder Scrolls III: Morrowind')
+                    default=['The Elder Scrolls III: Morrowind'],nargs='*')
 args = parser.parse_args()
 # k,a = symbols('k a')
 # fit_function = k**a
@@ -25,10 +25,10 @@ g = igraph.Graph(directed=False)
 
 vertexes = set()
 
-appid = db.apps.find_one({'name': args.app})['appid']
+appsid = [i['appid'] for i in db.apps.find({'name': {'$in': args.apps}})]
 uids = {
     review['author']['steamid']
-    for review in db.reviews.find({'appid': appid}, {'author': 1})
+    for review in db.reviews.find({'appid': {'$in': appsid}}, {'author': 1})
 }
 
 uids = list(uids)
@@ -83,12 +83,10 @@ print("Graph created")
 print(tabulate([[k, v] for k, v in graph.get_graph_infos(g).items()]))
 print(g.summary())
 
+exec_name = "_".join(sorted(args.apps))
 fig = graph.plot_degree_distribution(g)
-fig.savefig(f'degree_distribution_app_{args.app}.png')
+fig.savefig(f'degree_distribution_app_{exec_name}.png')
 fig = graph.plot_degree_distribution(g, type_='log')
-fig.savefig(f'degree_distribution_log_app_{args.app}.png')
+fig.savefig(f'degree_distribution_log_app_{exec_name}.png')
 
-
-
-igraph.plot(g, target=f'users_graph_app_{args.app}.png',vertex_size=1)
-# out.save()
+igraph.plot(g, target=f'users_graph_app_{exec_name}.png',vertex_size=1)
