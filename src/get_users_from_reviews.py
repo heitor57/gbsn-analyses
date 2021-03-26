@@ -18,6 +18,7 @@ db = utils.start_db()
 app = db.apps.find_one({'name': args.game})
 
 ended = None
+num_iterations = 0
 while ended is None:
     try:
         reviews = db.reviews.find({'appid': app['appid']},
@@ -25,7 +26,6 @@ while ended is None:
 
         evaluated_users = db.users.find({}, {'steamid': 1, '_id': 0})
         users_left = evaluated_users.count()
-        num_iterations = 0
         evaluated_users_id = {i['steamid'] for i in evaluated_users}
 
         for review in reviews:
