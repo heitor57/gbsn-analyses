@@ -7,18 +7,29 @@ import matplotlib.pyplot as plt
 
 def get_graph_infos(g):
     infos = {}
+    print("Computing Number of vertices")
     infos['Number of vertices'] = g.vcount()
+    print("Computing Number of edges")
     infos['Number of edges'] = g.ecount()
+    print("Computing Mean Degree")
     infos['Mean Degree'] = np.mean(g.degree())
+    print("Computing Min Degree")
     infos['Min Degree'] = np.min(g.degree())
+    print("Computing Max Degree")
     infos['Max Degree'] = np.max(g.degree())
+    print("Computing Density")
     infos['Density'] = g.density(loops=False)
+    print("Computing Sparsity")
     infos['Sparsity'] = 1-g.density(loops=False)
     # infos['c'] = transitivity_undirected
     # infos['density 2'] = 2*g.ecount()/((g.vcount()-1)*g.vcount())
+    print("Computing Clustering coefficient")
     infos['Clustering coefficient'] = g.transitivity_avglocal_undirected(mode="zero")
-    infos['Radius'] = g.radius()
-    infos['Diameter'] = g.diameter()
+    # print("Computing Radius")
+    # infos['Radius'] = g.radius()
+    # print("Computing Diameter")
+    # infos['Diameter'] = g.diameter()
+    print("Computing Girth")
     infos['Girth'] = g.girth()
     return infos
 def plot_degree_distribution(g,type_=None):
