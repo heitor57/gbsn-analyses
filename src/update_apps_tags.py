@@ -1,4 +1,6 @@
 import numpy as np
+
+import traceback
 import time
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium import webdriver
@@ -9,6 +11,7 @@ import utils
 from scipy import *
 import parsel
 import igraph
+from bs4 import BeautifulSoup
 from tqdm import tqdm
 from tabulate import tabulate
 import matplotlib.pyplot as plt
@@ -34,7 +37,7 @@ api = utils.create_api()
 
 db = utils.start_db()
 
-apps = db.apps.find()
+apps_ids = [i['appid'] for i in db.apps.find({'tags':{'$exists':False}})]
 
 def get_app_tags(driver,app_id):
 
@@ -42,24 +45,41 @@ def get_app_tags(driver,app_id):
     # response = requests.get(url)
     driver.get(url)
 
-    time.sleep(6)
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+    tags = []
+    tp = soup.find(class_='glance_tags_ctn popular_tags_ctn')
+    data = dict()
+    data['tags'] = None
+    if tp != None:
+        for a in tp.find_all('a'):
+            # print(a['href'])
+            tags.append(a.text.lstrip().rstrip())
+        print(tags)
+        data['tags'] = tags
 
-    print(driver.find_element_by_css_selector('.glance_tags'))
+    return data
+    # time.sleep(6)
+
+    # driver.find_element_by_css_selector('.glance_tags.popular_tags a')
     # selector = parsel.Selector(text=driver.page_source)
     # print(selector.css('.glance_tags').get())
 options = FirefoxOptions()
 options.add_argument("--headless")
 
 try:
-    driver = webdriver.Firefox('.',options=options)
-    for app in apps:
-        get_app_tags(driver,app['appid'])
-        break
-
+    driver = webdriver.Firefox(options=options)
+    for app_id in tqdm(apps_ids):
+        # if int(app_id) == 570:
+        data = get_app_tags(driver,app_id)
+        # print("EWQEWq")
+        db.apps.update_one({'appid':app_id},{"$set": data})
+        # print("EWQEWq")
+            # break
     driver.close()
 
 except:
-  driver.close()
+    traceback.print_exc()
+    driver.close()
   # print "Ate logo!" 
 # appsid 
 
