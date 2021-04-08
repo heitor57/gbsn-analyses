@@ -23,10 +23,10 @@ from selenium import webdriver
 
 import urllib.parse
 parser = argparse.ArgumentParser()
-# parser.add_argument('--apps',
-                    # type=str,
-                    # default=['The Elder Scrolls III: Morrowind'],
-                    # nargs='*')
+parser.add_argument('--apps',
+                    type=str,
+                    default=['The Elder Scrolls III: Morrowind'],
+                    nargs='*')
 # parser.add_argument('--max_num_iterations',
                     # type=int,
                     # help='Maximum number of iterations to do at crawling',
@@ -37,7 +37,35 @@ api = utils.create_api()
 
 db = utils.start_db()
 
-apps_ids = [i['appid'] for i in db.apps.find({'tags':{'$exists':False}})]
+appsid = [i['appid'] for i in db.apps.find({'name':{'$in':args.apps},'tags':{'$exists':False}})]
+
+uids = {
+    review['author']['steamid']
+    for review in db.reviews.find({'appid': {
+        '$in': appsid
+        }}, {'author': 1})
+}
+uids = list(uids)
+games = set()
+for user in tqdm(
+        db.users.find(
+            {
+                "friendslist": {
+                    "$exists": True
+                },
+                "steamid": {
+                    '$in': uids
+                },
+                'games':{'$exists':True}
+            }, {
+                '_id': 0,
+                # 'steamid': 1,
+                # 'games': 1,
+                'games': 1,
+            }).batch_size(10000)):
+    # print(user)
+    if user['games'] != None:
+        games |= set([g['appid'] for g in user['games']])
 
 def get_app_tags(driver,app_id):
 
@@ -66,6 +94,7 @@ def get_app_tags(driver,app_id):
 options = FirefoxOptions()
 options.add_argument("--headless")
 
+apps_ids = list(games)
 try:
     driver = webdriver.Firefox(options=options)
     for app_id in tqdm(apps_ids):
