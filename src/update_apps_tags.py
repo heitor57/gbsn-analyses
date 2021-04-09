@@ -37,7 +37,7 @@ api = utils.create_api()
 
 db = utils.start_db()
 
-appsid = [i['appid'] for i in db.apps.find({'name':{'$in':args.apps},'tags':{'$exists':False}})]
+appsid = [i['appid'] for i in db.apps.find({'name':{'$in':args.apps}})]
 
 uids = {
     review['author']['steamid']
@@ -67,6 +67,9 @@ for user in tqdm(
     if user['games'] != None:
         games |= set([g['appid'] for g in user['games']])
 
+apps_ids_updated ={i['appid'] for i in db.apps.find({'tags':{'$exists':True}})}
+games = games - apps_ids_updated
+
 def get_app_tags(driver,app_id):
 
     url  = f"https://store.steampowered.com/app/{app_id}/"
@@ -95,6 +98,7 @@ options = FirefoxOptions()
 options.add_argument("--headless")
 
 apps_ids = list(games)
+# print(len(apps_ids))
 try:
     driver = webdriver.Firefox(options=options)
     for app_id in tqdm(apps_ids):
