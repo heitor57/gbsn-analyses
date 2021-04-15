@@ -9,6 +9,7 @@ services:
     volumes:
       - mongodb:/data/db
       - mongodb_config:/data/configdb
+      #- ./backup14abril:/dump
 
 volumes:
   mongodb:
