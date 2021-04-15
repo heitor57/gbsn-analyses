@@ -33,7 +33,7 @@ def get_graph_infos(g):
     infos['Girth'] = g.girth()
     return infos
 def plot_degree_distribution(g,type_=None):
-    fit_function = lambda k, a,c : c*k**a
+    fit_function = lambda k, a : k**a
     fig, ax = plt.subplots()
     # max_degree = max(g.degree())
     values, counts = np.unique(g.degree(), return_counts=True)
@@ -46,6 +46,10 @@ def plot_degree_distribution(g,type_=None):
     ax.scatter(x=values,y=counts,facecolors='none',edgecolors='k')
     ax.set_xlabel('Degree')
     ax.set_ylabel('Probability(Degree)')
+    
+    d0 = values != 0
+    values = values[d0]
+    counts = counts[d0]
 
     popt, pcov= scipy.optimize.curve_fit(fit_function,xdata=values,ydata=counts)
     # fitted_function = fit_function.subs(a, UnevaluatedExpr(popt[0]))
@@ -54,7 +58,7 @@ def plot_degree_distribution(g,type_=None):
 
     line = ax.plot(values,list(map(lambda k: fit_function(k,*popt),values)),color='k')
 
-    s= f'Fitted line (${popt[1]:.3f}k^{{{popt[0]:.3f}}}$)'
+    s= f'Fitted line ($k^{{{popt[0]:.3f}}}$)'
     print(s)
     ax.legend([s,'Collected data'])
     # print(lambda_fit_function(1,2))
