@@ -1,14 +1,16 @@
 \documentclass[12pt]{article}
+
 \usepackage[T1]{fontenc} 
 \usepackage{footmisc}
 \usepackage{sbc-template}
+\usepackage{subcaption}
 \usepackage{graphicx,url}
 \usepackage[brazil]{babel}
 %\usepackage{hyperref}
 \usepackage{xurl}
 %\usepackage[utf8]{inputenc}
 %\usepackage[latin1]{inputenc}  
-
+%\fuzz=399
      
 \sloppy
 
@@ -27,11 +29,11 @@
 \maketitle
 
 \begin{abstract}
-				Games nowadays are increasingly present in society and have been reaching a large public, more and more people from different social classes, countries and among other factors are being included in the culture of electronic games. It is estimated that almost 60 percent of Americans play video games. Given this question, this work seeks to analyze data from a social network based on games (Steam) extracting information that can be valuable about the domain through mainly modeling the data through complex networks.
+				Games nowadays are increasingly present in society and have been reaching a large public, more and more people from different social classes, countries and among other factors are being included in the culture of electronic games. It is estimated that almost 60 percent of Americans play video games. Given this question, this work seeks to analyze data from a social network based on games (Steam) extracting information that can be valuable about the domain through mainly modeling the data through complex networks. Various information was taken from the social relationships of users in this type of network. It was possible to better understand how users behave on this network depending on their tastes.
 \end{abstract}
      
 \begin{resumo} 
-				Jogos na atualidade estão cada vez mais presentes na sociedade e vem atingindo um grande público, cada vez mais pessoas de diversas classes sociais, paises e entre outros fatores estão sendo incluidos na cultura de jogos eletrônicos. Estima-se que quase 60 por cento dos americanos jogam videogames. Dado essa questão este trabalho busca análisar dados provenientes de uma rede social baseada em jogos (Steam) extraindo informações que podem ser valiosas sobre o domínio atráves principalmente de uma modelagem dos dados por meio de redes complexas.
+				Jogos na atualidade estão cada vez mais presentes na sociedade e vem atingindo um grande público, cada vez mais pessoas de diversas classes sociais, paises e entre outros fatores estão sendo incluidos na cultura de jogos eletrônicos. Estima-se que quase 60 por cento dos americanos jogam videogames. Dado essa questão este trabalho busca análisar dados provenientes de uma rede social baseada em jogos (Steam) extraindo informações que podem ser valiosas sobre o domínio atráves principalmente de uma modelagem dos dados por meio de redes complexas. Diversas informações foram retiradas das relações sociais de usuários nesse tipo de rede. Foi possível entender melhor como usuários se comportam nessa rede dependendo de seus gostos.
 \end{resumo}
 
 
@@ -47,7 +49,7 @@ Também é de conhecimento que sistemas diversos em vários domínios podem ser 
 
 Uma comunidade em uma rede é um grupo de vértices que possuem conexões mais densas com os membros do grupo do que as conexões com o restante da rede \cite{girvan2002community}. Então, detecção de comunidade consiste em identificar tais comunidades de uma rede a fim de revelar as informações valiosas de sua estrutura e funcionalidades \cite{li2020preliminary}. Por outro lado, modularidade é uma medida popular para a estrutura de redes, pois mede a força de divisão de uma rede em comunidades \cite{newman2006modularity,li2020preliminary}. Redes de alta modularidade têm conexões densas entre os vértices dentro das comunidades e conexões comparativamente esparsas entre vértices entre comunidades diferentes \cite{li2020preliminary}.
 
-Então, neste trabalho, foi desenvolvido uma análise de redes sociais baseadas em jogos atráves de principalmente uma modelagem por meio de redes complexas, com isso foi capaz de inferir algumas informações sobre o domínio.
+Então, neste trabalho, foi desenvolvido uma análise de redes sociais baseadas em jogos atráves de principalmente uma modelagem por meio de redes complexas, os dados utilizados na modelagem são de usuários e suas relações de amizade, com isso foi capaz de inferir algumas informações sobre o domínio.
 
 \section{Trabalhos relacionados} \label{sec:firstpage}
 
@@ -58,7 +60,6 @@ A Steam já vem sendo análisada em diversos estudos. Becker et al. analisa o pa
 Para a coleta de dados foi utilizado a loja da Steam\footnote{\url{https://store.steampowered.com/}\label{fn:steamstore}} para obter informações sobre os jogos e \textit{reviews} sobre eles, assim como a Steam API\footref{fn:steamapi} para obtenção de jogos possuidos pelos usuários, relações sociais e a base de jogos da Steam.
 
 A coleta de dados de usuários foi feita partindo de uma pré-seleção de alguns jogos populares que são diversos entre si em relação a suas categorias, os jogos selecionados foram: DOOM; Unturned e TES III: Morrowind.
-
 
 A partir dos jogos pré-selecionados foram coletados todos \textit{reviews} sobre eles, assim foi obtido usuários e suas respectivas revisões sobre os jogos. A partir dessas revisões foi feito a coleta das relações de amizades dos usuários e os jogos que eles possuem.
 
@@ -99,7 +100,7 @@ A tabela \ref{tab:preselection1} mostra os dados dos jogos pré-selecionados.
 
 \section{Análise de dados}
 
-Para ser feito a análise, como dito anteriormente, algumas filtragens foram feitas. A primeira delas é a mais básica que vale para todas análises que é a filtragem de usuários que não estão aptos a terem seus dados coletados.
+Para ser feito a análise, como dito anteriormente, algumas filtragens foram feitas.
 
 \subsection{Modelagem dos dados com redes complexas}
 
@@ -117,7 +118,7 @@ Com isso foi extraido as seguintes informações dos grafos da base de usuários
 				\item Esparsidade: inverso da densidade;
 				\item Cintura: comprimento do menor ciclo do grafo;
 				\item Coeficiente de clustering: mede a redundância ou correlação das arestas ao redor de um vértice, neste caso o coeficiente é calculado para cada vértice e após isso a média é feita;
-				\item Centralidade por autovetor (CenAutovetor): a centralidade de autovetor é uma visão mais sofisticada da centralidade, um nó com poucas conexões pode ter uma centralidade de autovetor muito alta se essas poucas conexões são para nós bem conectados;  
+				\item Centralidade por autovetor: a centralidade de autovetor é uma visão mais sofisticada da centralidade, um nó com poucas conexões pode ter uma centralidade de autovetor muito alta se essas poucas conexões são para nós bem conectados.
 				%\item Closeness: média da distância entre um vértice e todos os outros através do caminho mais curto, pode ser interpretado como a velocidade de propagação de algo na rede.
 				%\item Betweeness: baseada na ideia de distância geodésica, assim como Closeness, entre nós de um grafo. Define o betweeness de um vértice como a fração de caminhos geodésicos entre pares de vértices na rede aos quais ele pertence.
 \end{enumerate}
@@ -132,7 +133,7 @@ Na tabela \ref{tab:datagraphs} é possível observar que o grafo sem nenhum tipo
 \centering
 \caption{Dados das redes sem filtragem.}
 \label{tab:datagraphs}
-\small
+\scriptsize
 \begin{tabular}{|l|l|l|l|l|}
 				\hline
 				Métricas/Jogos     & Unturned    & DOOM        & TES III: Morrowind & Todos\\\hline
@@ -150,74 +151,182 @@ Centralidade por autovetor & 8.57334e-05 & 0.000293077 & 0.00192847         & 0.
 \end{table}
 
 
-Para podermos interpretar melhor esses dados, será observado agora a distribuição de graus de cada base de dados.
+Para podermos interpretar melhor esses dados, será observado agora a distribuição de graus de cada base de dados. Como normalmente é apresentado um comportamento de power-law em distribuição de graus em relações sociais, então foi utilizado a função para tentar fazer uma regressão para ver se as relações sociais nessas bases se encaixam nesse comportamento. Pela figura \ref{fig:degreedistunfiltered} podemos ver que as bases apresentam uma power-law (então são livres de escala), já que a função utilizada para a regressão conseguiu capturar bem o comportamento.
 
-
-
-
-
-
-
-Com essa visão da base de dados sem filtragem agora podemos introduzir a filtragem, pois na modelagem com redes complexas, para garantir o funcionamento dos algoritmos é interessante extrair a componente gigante do grafo para ser feito as análises.
-
-
-\section{Figures and Captions}\label{sec:figs}
-
-
-Figure and table captions should be centered if less than one line
-(Figure~\ref{fig:exampleFig1}), otherwise justified and indented by 0.8cm on
-both margins, as shown in Figure~\ref{fig:exampleFig2}. The caption font must
-be Helvetica, 10 point, boldface, with 6 points of space before and after each
-caption.
-
-\begin{figure}[ht]
+\begin{figure*}
 \centering
-\includegraphics[width=.5\textwidth]{fig1.jpg}
-\caption{A typical figure}
-\label{fig:exampleFig1}
-\end{figure}
+\begin{subfigure}[b]{0.475\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{img/degree_distribution_log_app_Unturned.png}
+		\caption{ Unturned}    
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.475\textwidth}  
+		\centering 
+		\includegraphics[width=\textwidth]{img/degree_distribution_log_app_DOOM.png}
+		\caption{ DOOM}    
+\end{subfigure}
+\vskip\baselineskip
+\begin{subfigure}[b]{0.475\textwidth}   
+		\centering 
+		\includegraphics[width=\textwidth]{img/degree_distribution_log_app_The Elder Scrolls III: Morrowind.png}
+		\caption{ TES III: Morrowind }    
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.475\textwidth}   
+		\centering 
+		\includegraphics[width=\textwidth]{img/degree_distribution_log_app_DOOM_The Elder Scrolls III: Morrowind_Unturned.png}
+		\caption{ Todos}    
+		%\label{fig:mean and std of net44}
+\end{subfigure}
+\caption[  ]
+{ Distribuição de graus em escala logarítmica.} 
+\label{fig:degreedistunfiltered}
+\end{figure*}
 
-\begin{figure}[ht]
+
+Na imagem \ref{fig:degreeccdf} podemos ver a distribuição acumulada de probabilidade de graus das bases, é possível observar que nas bases de jogos single-players mais de 88\% dos jogadores não possuem amizades, diferentemente da base de jogadores do Unturned que possue 50\% dos jogadores sem relações de amizade.
+
+\begin{figure*}
 \centering
-\includegraphics[width=.3\textwidth]{fig2.jpg}
-\caption{This figure is an example of a figure caption taking more than one
-  line and justified considering margins mentioned in Section~\ref{sec:figs}.}
-\label{fig:exampleFig2}
-\end{figure}
+\begin{subfigure}[b]{0.475\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{img/degree_ccdf_distribution_log_app_Unturned.png}
+		\caption{ Unturned}    
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.475\textwidth}  
+		\centering 
+		\includegraphics[width=\textwidth]{img/degree_ccdf_distribution_log_app_DOOM.png}
+		\caption{ DOOM}    
+\end{subfigure}
+\vskip\baselineskip
+\begin{subfigure}[b]{0.475\textwidth}   
+		\centering 
+		\includegraphics[width=\textwidth]{img/degree_ccdf_distribution_log_app_The Elder Scrolls III: Morrowind.png}
+		\caption{ TES III: Morrowind }    
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.475\textwidth}   
+		\centering 
+		\includegraphics[width=\textwidth]{img/degree_ccdf_distribution_log_app_DOOM_The Elder Scrolls III: Morrowind_Unturned.png}
+		\caption{ Todos}    
+		%\label{fig:mean and std of net44}
+\end{subfigure}
+\caption[  ]
+{ Função de distribuição acumulada de graus.} 
+\label{fig:degreeccdf}
+\end{figure*}
 
-In tables, try to avoid the use of colored or shaded backgrounds, and avoid
-thick, doubled, or unnecessary framing lines. When reporting empirical data,
-do not use more decimal digits than warranted by their precision and
-reproducibility. Table caption must be placed before the table (see Table 1)
-and the font used must also be Helvetica, 10 point, boldface, with 6 points of
-space before and after each caption.
+Com essa visão da base de dados sem filtragem agora podemos introduzir a filtragem, pois na modelagem com redes complexas, para garantir o funcionamento dos algoritmos, é interessante extrair a componente gigante do grafo para ser feito as análises. Na \ref{tab:datagraphsgiant} podemos ver inicialmente que as medidas de centralidade tem um aumento do seu valor, também a esparsidade diminui, tudo como esperado. Há um número reduzido drasticamente de usuários no DOOM e no TES, isso provavelmente se deve a ideia já explorada de serem jogos pouco sociais.
 
 \begin{table}[ht]
 \centering
-\caption{Variables to be considered on the evaluation of interaction
-  techniques}
-\label{tab:exTable1}
-\includegraphics[width=.7\textwidth]{table.jpg}
+\caption{Dados das redes com a componente gigante.}
+\label{tab:datagraphsgiant}
+\scriptsize
+\begin{tabular}{|l|l|l|l|l|}
+				\hline
+				Métricas/Jogos     & Unturned    & DOOM        & TES III: Morrowind & Todos\\\hline
+\#Vertices                 & 154814           & 1197          & 290                & 176984                \\\hline
+\#Arestas                  & 314094           & 1577          & 370                & 353767                \\\hline
+Grau médio                 &      4.0577      &    2.63492    &   2.55172          &      3.99773     \\\hline
+Menor grau                 &      1           &    1          &   1                &      1           \\\hline
+Maior grau                 &    179           &   37          &  26                &    180             \\\hline
+Densidade                  &      2.62103e-05 &    0.00220311 &   0.0088295        &      2.25882e-05 \\\hline
+Esparsidade                &      0.999974    &    0.997797   &   0.991171         &      0.999977    \\\hline
+Cintura                    &      3           &    3          &   3                &      3           \\\hline
+Coeficiente de clustering  &      0.0613016   &    0.0510859  &   0.0429698        &      0.0604662   \\\hline
+Centralidade por autovetor &      0.00215113  &    0.0141345  &   0.0831036        &      0.0019412   \\\hline
+\end{tabular}
 \end{table}
 
-\section{Images}
 
-All images and illustrations should be in black-and-white, or gray tones,
-excepting for the papers that will be electronically available (on CD-ROMs,
-internet, etc.). The image resolution on paper should be about 600 dpi for
-black-and-white images, and 150-300 dpi for grayscale images.  Do not include
-images with excessive resolution, as they may take hours to print, without any
-visible difference in the result. 
+Com isso podemos fazer uma detecção de comunidades de cada rede. A figura \ref{fig:graphgiant} apresenta representações de gráficos da rede, assim como as comunidades detectadas. As comunidades foram detectadas utilizando o algoritmo de Louvain. Podemos ver que existem pequenas comunidades, que se parecem mais disjuntas nos jogos single-player, enquanto no Unturned há grandes comunidades. Poderemos observar isso melhor em outros gráficos. A modularidade de Girvan–Newman foi utilizada para medir a modularidade das comunidades.
 
-\section{References}
+Como podemos ver a modularidade ficou um pouco maior para o jogo DOOM, isso pode ter sido por conta de que mesmo com poucas pessoas tendo relações sociais, estas pessoas se fecham mais em grupos nesse tipo de jogo (que é derivado de um clássico e também é single-player).
 
-Bibliographic references must be unambiguous and uniform.  We recommend giving
-the author names references in brackets, e.g. \cite{knuth:84},
-\cite{boulic:91}, and \cite{smith:99}.
 
-The references must be listed using 12 point font size, with 6 points of space
-before each reference. The first line of each reference should not be
-indented, while the subsequent should be indented by 0.5 cm.
+\begin{figure*}
+\centering
+\begin{subfigure}[b]{0.475\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{img/users_graph_app_Unturned_giant.png}
+		\caption{Unturned (modularidade de 0.773)}    
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.475\textwidth}  
+		\centering 
+		\includegraphics[width=\textwidth]{img/users_graph_app_DOOM_giant.png}
+		\caption{DOOM (modularidade de 0.841)}    
+\end{subfigure}
+\vskip\baselineskip
+\begin{subfigure}[b]{0.475\textwidth}   
+		\centering 
+		\includegraphics[width=\textwidth]{img/users_graph_app_The Elder Scrolls III: Morrowind_giant.png}
+		\caption{TES III: Morrowind (modularidade de 0.757)}    
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.475\textwidth}   
+		\centering 
+		\includegraphics[width=\textwidth]{img/users_graph_app_DOOM_The Elder Scrolls III: Morrowind_Unturned_giant.png}
+		\caption{Todos (modularidade de 0.780)}    
+		%\label{fig:mean and std of net44}
+\end{subfigure}
+\caption[  ]
+{ Representação dos grafos.} 
+
+\label{fig:graphgiant}
+\end{figure*}
+
+
+Para observar ainda mais as comunidades o gráfico na figura \ref{fig:communitiesaccgiant} apresenta um acumulado de porcentagem de tamanhos de comunidades. Com essa figura é possível ter uma ideia dos tamanhos das comunidades. Primeiro temos que o jogo Unturned possui uma base de jogadores com algumas comunidades grandes e várias comunidades pequenas. Pelo gráfico parece haver comunidades que englobam 15\% dos jogadores (é não são poucos jogadores), que é algo bem significativo, mostrando o aspecto social do jogo. O DOOM apresenta pequenas comunidades de tamanho uniforme, demonstrando a falta de comunidade nesse tipo de jogo, também podemos ver que o TES apresenta comunidades supostamente grandes, que porém não são já que estão sendo representadas como porcentagem de usuários, espera-se que se a base de jogadores de TES fosse maior, então as comunidades ficariam com porcentagens do total de usuários menores.
+
+
+\begin{figure*}
+\centering
+\begin{subfigure}[b]{0.475\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{img/communities_num_app_Unturned_giant.png}
+		\caption{Unturned (modularidade de 0.773)}    
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.475\textwidth}  
+		\centering 
+		\includegraphics[width=\textwidth]{img/communities_num_app_DOOM_giant.png}
+		\caption{DOOM (modularidade de 0.841)}    
+\end{subfigure}
+\vskip\baselineskip
+\begin{subfigure}[b]{0.475\textwidth}   
+		\centering 
+		\includegraphics[width=\textwidth]{img/communities_num_app_The Elder Scrolls III: Morrowind_giant.png}
+		\caption{TES III: Morrowind (modularidade de 0.757)}    
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.475\textwidth}   
+		\centering 
+		\includegraphics[width=\textwidth]{img/communities_num_app_DOOM_The Elder Scrolls III: Morrowind_Unturned_giant.png}
+		\caption{Todos (modularidade de 0.780)}    
+		%\label{fig:mean and std of net44}
+\end{subfigure}
+\caption[  ]
+{ Acumulado de tamanho de comunidades.} 
+
+\label{fig:communitiesaccgiant}
+\end{figure*}
+
+
+\section{Conclusão}
+
+Com esse trabalho foi possível explorar técnicas de redes complexas e análisar um domínio obtendo inferencias que podem ser produtivas para especialista da área. Algumas ideias que parecem intuitivas foram demonstradas na prática nas bases coletadas. A modelagem com grafos se mostrou eficiênte para análisar dados desse domínio, porém não é uma ''ferramenta'' que resolve tudo (que já é algo conhecido e entendido).
+
+Também foi possível observar que jogos single-player possuem usuários com menos relações de amizade comparado a jogos multiplayer. As rede social da Steam também demonstrou ser bem esparsa, algo esperado. Os usuários na média parecem também não ter muitas relações, uma boa parcela (>40\%) dos usuários parecem gostar de jogar jogos sozinhos, independentemente se forem multiplayers ou single-player. A médida de centralidade desta rede também não foi muito grande. E também jogos derivados de clássicos parecem ter jogadores que se comportam de maneira diferente de outros jogos, porém é claro que essas conclusões não são definitivas pois não é completamente robusto a análise feita para avaliar esse tipo de questão, porém podemos gerar algumas ideias.de outros jogos, porém é claro que essas conclusões não são definitivas pois não é completamente robusto a análise feita para avaliar esse tipo de questão, porém podemos gerar algumas ideias.
+
+Outra questão interessante observada é que jogos singleplayer criam comunidades menores comparadas a jogos multiplayers que conseguem reunir uma comunidade que reuni aproximadamente 15\% de jogadores e outras grandes comunidades também.
+
+Os maiores problemas enfretados na produção desse trabalho foi a dificuldade na execução de algoritmos na base de dados grande criada, porém com a base de dados grande foi possível inferir e realizar experimentações mais robustas.
+
+Como trabalhos futuros temos como a junção de outras informações na base para inferência de informações, como por exemplo tempo de jogo, reviews positivo ou negativo, e outros. Também é interessante a modelagem de outros tipos de entidades desse dóminio como redes complexas (como por exemplo os próprios jogos).
 
 \bibliographystyle{sbc}
 \bibliography{sbc-template}
