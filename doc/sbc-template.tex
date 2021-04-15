@@ -1,5 +1,6 @@
 \documentclass[12pt]{article}
 \usepackage[T1]{fontenc} 
+\usepackage{footmisc}
 \usepackage{sbc-template}
 \usepackage{graphicx,url}
 \usepackage[brazil]{babel}
@@ -18,7 +19,7 @@
 
 \address{Universidade Federal de São João del-Rei
   (UFSJ)\\
-  \email{werneck@aluno.ufsj.edu.br}
+  \email{heitorwerneck@hotmail.com}
 }
 
 \begin{document} 
@@ -26,21 +27,11 @@
 \maketitle
 
 \begin{abstract}
-  This meta-paper describes the style to be used in articles and short papers
-  for SBC conferences. For papers in English, you should add just an abstract
-  while for the papers in Portuguese, we also ask for an abstract in
-  Portuguese (``resumo''). In both cases, abstracts should not have more than
-  10 lines and must be in the first page of the paper.
+				Games nowadays are increasingly present in society and have been reaching a large public, more and more people from different social classes, countries and among other factors are being included in the culture of electronic games. It is estimated that almost 60 percent of Americans play video games. Given this question, this work seeks to analyze data from a social network based on games (Steam) extracting information that can be valuable about the domain through mainly modeling the data through complex networks.
 \end{abstract}
      
 \begin{resumo} 
-  Este meta-artigo descreve o estilo a ser usado na confecção de artigos e
-  resumos de artigos para publicação nos anais das conferências organizadas
-  pela SBC. É solicitada a escrita de resumo e abstract apenas para os artigos
-  escritos em português. Artigos em inglês deverão apresentar apenas abstract.
-  Nos dois casos, o autor deve tomar cuidado para que o resumo (e o abstract)
-  não ultrapassem 10 linhas cada, sendo que ambos devem estar na primeira
-  página do artigo.
+				Jogos na atualidade estão cada vez mais presentes na sociedade e vem atingindo um grande público, cada vez mais pessoas de diversas classes sociais, paises e entre outros fatores estão sendo incluidos na cultura de jogos eletrônicos. Estima-se que quase 60 por cento dos americanos jogam videogames. Dado essa questão este trabalho busca análisar dados provenientes de uma rede social baseada em jogos (Steam) extraindo informações que podem ser valiosas sobre o domínio atráves principalmente de uma modelagem dos dados por meio de redes complexas.
 \end{resumo}
 
 
@@ -50,10 +41,13 @@ Jogos na atualidade estão cada vez mais presentes na sociedade e vem atingindo 
 
 Diversos métodos são usados para entender os comportamentos dos usuários nessas redes sociais baseadas em jogos (RSBJ), como por exemplo: pesquisas; entrevistas e análise de dados em grande escala. As entrevistas e pesquisas demonstram ter vantagens de serem capazes de entender os motivos e ponderar fatores demográficos, como sexo ou renda \cite{yee2006demographics,yee2006motivations}.
 
-Existem atualmente diversas bases de dados extremamente grandes, que podemos até mesmo denominar como Big Data, que podem ser usadas para extrair diversas informações sobre os usuários de jogos de uma maneira robusta. A rede social baseada em jogos mais popular atualmente é a Steam, ela prove uma API que possibilita a extração dos dados de usuários e jogos de sua base de dados \footnote{https://steamcommunity.com/dev}, assim possibilitando diversas possibilidades para manipulação e processamento desses dados de maneira que gere informações que podem ser interessantes sobre o dominio.
+Existem atualmente diversas bases de dados extremamente grandes, que podemos até mesmo denominar como Big Data, que podem ser usadas para extrair diversas informações sobre os usuários de jogos de uma maneira robusta. A rede social baseada em jogos mais popular atualmente é a Steam, ela prove uma API que possibilita a extração dos dados de usuários e jogos de sua base de dados \footnote{\url{https://steamcommunity.com/dev}\label{fn:steamapi}}, assim possibilitando diversas possibilidades para manipulação e processamento desses dados de maneira que gere informações que podem ser interessantes sobre o dominio.
 
-Então neste trabalho foi desenvolvido uma análise de redes sociais baseadas em jogos atráves de redes complexas, com isso foi capaz de inferir algumas informações sobre o dominio e seus usuários. A análise tem como principal foco usuários.
+Também é de conhecimento que sistemas diversos em vários domínios podem ser descritos como redes complexas, quando a estrutura de comunidade é uma propriedade topológica das redes \cite{albert2002statistical,radicchi2004defining}. Redes complexas irão auxiliar a diversos tipos de análises para extração de informações, que podem ser valiosas sobre o dóminio a ser estudado. Diversas técnicas ou métricas são interessantes de serem aplicadas em redes, como por exemplo: detecção de comunidades; métricas básicas (e.g. densidade); análise de distribuição de graus; centralidade; propagação e outros.
 
+Uma comunidade em uma rede é um grupo de vértices que possuem conexões mais densas com os membros do grupo do que as conexões com o restante da rede \cite{girvan2002community}. Então, detecção de comunidade consiste em identificar tais comunidades de uma rede a fim de revelar as informações valiosas de sua estrutura e funcionalidades \cite{li2020preliminary}. Por outro lado, modularidade é uma medida popular para a estrutura de redes, pois mede a força de divisão de uma rede em comunidades \cite{newman2006modularity,li2020preliminary}. Redes de alta modularidade têm conexões densas entre os vértices dentro das comunidades e conexões comparativamente esparsas entre vértices entre comunidades diferentes \cite{li2020preliminary}.
+
+Então, neste trabalho, foi desenvolvido uma análise de redes sociais baseadas em jogos atráves de principalmente uma modelagem por meio de redes complexas, com isso foi capaz de inferir algumas informações sobre o domínio.
 
 \section{Trabalhos relacionados} \label{sec:firstpage}
 
@@ -61,19 +55,111 @@ A Steam já vem sendo análisada em diversos estudos. Becker et al. analisa o pa
 
 \section{Coleta de dados}
 
+Para a coleta de dados foi utilizado a loja da Steam\footnote{\url{https://store.steampowered.com/}\label{fn:steamstore}} para obter informações sobre os jogos e \textit{reviews} sobre eles, assim como a Steam API\footref{fn:steamapi} para obtenção de jogos possuidos pelos usuários, relações sociais e a base de jogos da Steam.
+
+A coleta de dados de usuários foi feita partindo de uma pré-seleção de alguns jogos populares que são diversos entre si em relação a suas categorias, os jogos selecionados foram: DOOM; Unturned e TES III: Morrowind.
+
+
+A partir dos jogos pré-selecionados foram coletados todos \textit{reviews} sobre eles, assim foi obtido usuários e suas respectivas revisões sobre os jogos. A partir dessas revisões foi feito a coleta das relações de amizades dos usuários e os jogos que eles possuem.
+
+Os dados dos jogos foram obtidos atráves da loja da Steam\footref{fn:steamstore}, os dados obtidos foram: palavras-chave; preço; data de publicação e desenvolvedoras.
+
+A tabela \ref{tab:preselection1} mostra os dados dos jogos pré-selecionados.
+
+\begin{table}[ht]
+\centering
+\caption{Jogos pré-selecionados para coleta.}
+\label{tab:preselection1}
+				\scriptsize
+\begin{tabular}{|l|l|l|l|}
+				\hline
+				Jogo & Data publicação & Genêro & Monetização \\\hline
+				DOOM & 13/5/2016  & Gore, Ação, Sci-fi, Single-player & R\$ 61,50 \\\hline
+				Unturned & 7/7/2017  & Sobrevivência, Zumbis, Multiplayer & Free to Play \\\hline
+				TES III: Morrowind & 29/4/2002 & RPG, Mundo aberto, Fantasia, Single-player & R\$ 32,99  \\\hline
+\end{tabular}
+\end{table}
+
+É possível ver que um dos jogos tem uma base de jogadores maior, muito disso pode ser inferido que é devido a ser Multiplayer e Free to Play, e o outro já é um jogo que tem potencial de possuir um outro tipo de base de jogadores. Outro ponto a se notar na tabela \ref{tab:datajogos} é que os jogos tem uma base de jogadores quase que disjunta. No geral, espera-se que os usuários selecionados (dos jogos) consigam gerar boas representações da base de jogadores da Steam.
+
+
+\begin{table}[ht]
+\centering
+\caption{Dados gerais obtidos dos jogos pré-selecionados.}
+\label{tab:datajogos}
+\begin{tabular}{|l|l|}
+				\hline
+				Jogo     & \#Jogadores únicos  \\\hline
+				Unturned & 349922 \\\hline
+				DOOM     & 57729\\\hline
+				TES III: Morrowind & 12497  \\\hline
+				Total & 417132\\\hline
+\end{tabular}
+\end{table}
+
+\section{Análise de dados}
+
+Para ser feito a análise, como dito anteriormente, algumas filtragens foram feitas. A primeira delas é a mais básica que vale para todas análises que é a filtragem de usuários que não estão aptos a terem seus dados coletados.
+
+\subsection{Modelagem dos dados com redes complexas}
+
+A rede que será explorada é a de relações de amizades entre usuários, ou seja, os vértices são os usuários e as arestas representam a relação de amizade entre dois usuários, esse é um grafo acíclico. 
+
+Com isso foi extraido as seguintes informações dos grafos da base de usuários de cada jogo:
+
+\begin{enumerate}
+				\item \#Vertices: Número de usuários;
+				\item \#Arestas: Número de relações de amizade;
+				\item Grau médio;
+				\item Menor grau;
+				\item Maior grau;
+				\item Densidade: é a proporção do número de arestas com relação ao número máximo de arestas;
+				\item Esparsidade: inverso da densidade;
+				\item Cintura: comprimento do menor ciclo do grafo;
+				\item Coeficiente de clustering: mede a redundância ou correlação das arestas ao redor de um vértice, neste caso o coeficiente é calculado para cada vértice e após isso a média é feita;
+				\item Centralidade por autovetor (CenAutovetor): a centralidade de autovetor é uma visão mais sofisticada da centralidade, um nó com poucas conexões pode ter uma centralidade de autovetor muito alta se essas poucas conexões são para nós bem conectados;  
+				%\item Closeness: média da distância entre um vértice e todos os outros através do caminho mais curto, pode ser interpretado como a velocidade de propagação de algo na rede.
+				%\item Betweeness: baseada na ideia de distância geodésica, assim como Closeness, entre nós de um grafo. Define o betweeness de um vértice como a fração de caminhos geodésicos entre pares de vértices na rede aos quais ele pertence.
+\end{enumerate}
 
 
 
-\section{Sections and Paragraphs}
+Devido ao tamanho da rede coletada não foi possível a aplicação de algumas métricas de redes devido ao tempo de execução ser muito longo. Porém com as métricas apresentadas já é possível dar uma ideia da rede.
 
-Section titles must be in boldface, 13pt, flush left. There should be an extra
-12 pt of space before each title. Section numbering is optional. The first
-paragraph of each section should not be indented, while the first lines of
-subsequent paragraphs should be indented by 1.27 cm.
+Na tabela \ref{tab:datagraphs} é possível observar que o grafo sem nenhum tipo de tratamento é difícil de ser interpretado, porém um ponto que pode ser observado é que jogos single-player apresentam menor taxa de relações sociais, até mesmo a média de grau é menor (isso pode ter influência devido ao número de jogadores, porém de qualquer maneira mostra que não há incentivo para amigos jogarem esse mesmo jogo, pois o mesmo é feito para ser jogado sozinho). Essa interpretação é reforçada pelas medidas de centralidade que apresentam um valor baixo. Outro ponto a se notar é que a esparsidade é extremamente alta.
 
-\subsection{Subsections}
+\begin{table}[ht]
+\centering
+\caption{Dados das redes sem filtragem.}
+\label{tab:datagraphs}
+\small
+\begin{tabular}{|l|l|l|l|l|}
+				\hline
+				Métricas/Jogos     & Unturned    & DOOM        & TES III: Morrowind & Todos\\\hline
+\#Vertices                 & 349922      & 57729       & 12497              & 417132           \\\hline
+\#Arestas                  & 332266      & 4960        & 802                & 374850           \\\hline
+Grau médio                 & 1.89909     & 0.171837    & 0.128351           & 1.79727     \\\hline
+Menor grau                 & 0           & 0           & 0                  & 0           \\\hline
+Maior grau                 & 179         & 37          & 26                 & 180           \\\hline
+Densidade                  & 5.42719e-06 & 2.97667e-06 & 1.02714e-05        & 4.30865e-06 \\\hline
+Esparsidade                & 0.999995    & 0.999997    & 0.99999            & 0.999996    \\\hline
+Cintura                    & 3           & 3           & 3                  & 3           \\\hline
+Coeficiente de clustering  & 0.0306461   & 0.00323961  & 0.00142391         & 0.0289137   \\\hline
+Centralidade por autovetor & 8.57334e-05 & 0.000293077 & 0.00192847         & 0.000823627 \\\hline
+\end{tabular}
+\end{table}
 
-The subsection titles must be in boldface, 12pt, flush left.
+
+Para podermos interpretar melhor esses dados, será observado agora a distribuição de graus de cada base de dados.
+
+
+
+
+
+
+
+Com essa visão da base de dados sem filtragem agora podemos introduzir a filtragem, pois na modelagem com redes complexas, para garantir o funcionamento dos algoritmos é interessante extrair a componente gigante do grafo para ser feito as análises.
+
 
 \section{Figures and Captions}\label{sec:figs}
 
