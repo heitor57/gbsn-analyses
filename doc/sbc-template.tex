@@ -1,0 +1,139 @@
+\documentclass[12pt]{article}
+\usepackage[T1]{fontenc} 
+\usepackage{sbc-template}
+\usepackage{graphicx,url}
+\usepackage[brazil]{babel}
+%\usepackage{hyperref}
+\usepackage{xurl}
+%\usepackage[utf8]{inputenc}
+%\usepackage[latin1]{inputenc}  
+
+     
+\sloppy
+
+\title{Redes sociais baseadas em jogos\\ Uma abordagem com redes complexas}
+
+\author{Heitor L. Werneck\inst{1}}
+
+
+\address{Universidade Federal de São João del-Rei
+  (UFSJ)\\
+  \email{werneck@aluno.ufsj.edu.br}
+}
+
+\begin{document} 
+
+\maketitle
+
+\begin{abstract}
+  This meta-paper describes the style to be used in articles and short papers
+  for SBC conferences. For papers in English, you should add just an abstract
+  while for the papers in Portuguese, we also ask for an abstract in
+  Portuguese (``resumo''). In both cases, abstracts should not have more than
+  10 lines and must be in the first page of the paper.
+\end{abstract}
+     
+\begin{resumo} 
+  Este meta-artigo descreve o estilo a ser usado na confecção de artigos e
+  resumos de artigos para publicação nos anais das conferências organizadas
+  pela SBC. É solicitada a escrita de resumo e abstract apenas para os artigos
+  escritos em português. Artigos em inglês deverão apresentar apenas abstract.
+  Nos dois casos, o autor deve tomar cuidado para que o resumo (e o abstract)
+  não ultrapassem 10 linhas cada, sendo que ambos devem estar na primeira
+  página do artigo.
+\end{resumo}
+
+
+\section{Introdução}
+
+Jogos na atualidade estão cada vez mais presentes na sociedade e vem atingindo um grande público, cada vez mais pessoas de diversas classes sociais, paises e entre outros fatores estão sendo incluidos na cultura de jogos eletrônicos. Estima-se que quase 60 por cento dos americanos jogam videogames\footnote{\url{http://www.theesa.com/facts/pdfs/ESAEF2014.pdf/}}, gerando uma receita anual de mais de 25 bilhões de dolares somente para jogos de PC\footnote{\url{http://www.gamesindustry.biz/articles/2014-01-28-pc-gaming-market-to-exceed-USD25-billion-this-year-dfc/}}. Já existem diversos estudos focados em analisar o comportamento dessas pessoas que estão consumindo nesse mercado de jogos, analisando informações mais básicas como idade e situação econômica \cite{williams2008plays,griffiths2003breaking,kowert2014unpopular}.
+
+Diversos métodos são usados para entender os comportamentos dos usuários nessas redes sociais baseadas em jogos (RSBJ), como por exemplo: pesquisas; entrevistas e análise de dados em grande escala. As entrevistas e pesquisas demonstram ter vantagens de serem capazes de entender os motivos e ponderar fatores demográficos, como sexo ou renda \cite{yee2006demographics,yee2006motivations}.
+
+Existem atualmente diversas bases de dados extremamente grandes, que podemos até mesmo denominar como Big Data, que podem ser usadas para extrair diversas informações sobre os usuários de jogos de uma maneira robusta. A rede social baseada em jogos mais popular atualmente é a Steam, ela prove uma API que possibilita a extração dos dados de usuários e jogos de sua base de dados \footnote{https://steamcommunity.com/dev}, assim possibilitando diversas possibilidades para manipulação e processamento desses dados de maneira que gere informações que podem ser interessantes sobre o dominio.
+
+Então neste trabalho foi desenvolvido uma análise de redes sociais baseadas em jogos atráves de redes complexas, com isso foi capaz de inferir algumas informações sobre o dominio e seus usuários. A análise tem como principal foco usuários.
+
+
+\section{Trabalhos relacionados} \label{sec:firstpage}
+
+A Steam já vem sendo análisada em diversos estudos. Becker et al. analisa o papel dos jogos e grupos na Steam e apresenta a evolução da rede ao longo do tempo \cite{becker2012analysis}. O'Neill et al. também investigou a comunidade de usuários da Steam, porém se concentrou mais nos comportamentos dos usuários (jogadores) em termos de sua conectividade social, tempo de jogo, jogos obtidos, afinidade de gênero e despesas monetárias \cite{o2016condensing}. Já Blackburn et al. foca mais especificamente no comportamento de trapaça \cite{blackburn2011cheaters}, popularmente conhecido como \textit{cheating}. Existem muitos outros estudos que também investigam perspectivas mais diversas de comportamento dos jogadores na Steam. Sifa et al. investiga o envolvimento dos jogadores e o comportamento do jogo cruzado, analisando suas diferentes distribuições de frequência de tempo de jogo \cite{sifa2014playtime,sifa2015large}. Baumann et al. estuda as categorias comportamentais dos jogadores ''hardcore'' com base em seus perfis do Steam \cite{baumann2018hardcore}. Lim e Harrell examinam a identidade social dos jogadores e a relação entre seus comportamentos de manutenção de perfil e o tamanho de sua rede social [22]. Enquanto isso, outros estudiosos também estudam outras perspectivas do Steam, como sistemas de recomendação \cite{bertens2018machine}, mecanismo de early access \cite{lin2018empirical}, estratégias de atualização de jogos \cite{lin2017studying}, análises de jogos \cite{lin2019empirical}, caracterização de jogadores com base em dados de perfil \cite{li2019statistical} e assim por diante.
+
+\section{Coleta de dados}
+
+
+
+
+\section{Sections and Paragraphs}
+
+Section titles must be in boldface, 13pt, flush left. There should be an extra
+12 pt of space before each title. Section numbering is optional. The first
+paragraph of each section should not be indented, while the first lines of
+subsequent paragraphs should be indented by 1.27 cm.
+
+\subsection{Subsections}
+
+The subsection titles must be in boldface, 12pt, flush left.
+
+\section{Figures and Captions}\label{sec:figs}
+
+
+Figure and table captions should be centered if less than one line
+(Figure~\ref{fig:exampleFig1}), otherwise justified and indented by 0.8cm on
+both margins, as shown in Figure~\ref{fig:exampleFig2}. The caption font must
+be Helvetica, 10 point, boldface, with 6 points of space before and after each
+caption.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.5\textwidth]{fig1.jpg}
+\caption{A typical figure}
+\label{fig:exampleFig1}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.3\textwidth]{fig2.jpg}
+\caption{This figure is an example of a figure caption taking more than one
+  line and justified considering margins mentioned in Section~\ref{sec:figs}.}
+\label{fig:exampleFig2}
+\end{figure}
+
+In tables, try to avoid the use of colored or shaded backgrounds, and avoid
+thick, doubled, or unnecessary framing lines. When reporting empirical data,
+do not use more decimal digits than warranted by their precision and
+reproducibility. Table caption must be placed before the table (see Table 1)
+and the font used must also be Helvetica, 10 point, boldface, with 6 points of
+space before and after each caption.
+
+\begin{table}[ht]
+\centering
+\caption{Variables to be considered on the evaluation of interaction
+  techniques}
+\label{tab:exTable1}
+\includegraphics[width=.7\textwidth]{table.jpg}
+\end{table}
+
+\section{Images}
+
+All images and illustrations should be in black-and-white, or gray tones,
+excepting for the papers that will be electronically available (on CD-ROMs,
+internet, etc.). The image resolution on paper should be about 600 dpi for
+black-and-white images, and 150-300 dpi for grayscale images.  Do not include
+images with excessive resolution, as they may take hours to print, without any
+visible difference in the result. 
+
+\section{References}
+
+Bibliographic references must be unambiguous and uniform.  We recommend giving
+the author names references in brackets, e.g. \cite{knuth:84},
+\cite{boulic:91}, and \cite{smith:99}.
+
+The references must be listed using 12 point font size, with 6 points of space
+before each reference. The first line of each reference should not be
+indented, while the subsequent should be indented by 0.5 cm.
+
+\bibliographystyle{sbc}
+\bibliography{sbc-template}
+
+\end{document}
