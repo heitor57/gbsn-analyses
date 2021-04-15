@@ -1,5 +1,6 @@
 \documentclass[12pt]{article}
 \usepackage[T1]{fontenc} 
+\usepackage{footmisc}
 \usepackage{sbc-template}
 \usepackage{graphicx,url}
 \usepackage[brazil]{babel}
@@ -18,7 +19,7 @@
 
 \address{Universidade Federal de São João del-Rei
   (UFSJ)\\
-  \email{werneck@aluno.ufsj.edu.br}
+  \email{heitorwerneck@hotmail.com}
 }
 
 \begin{document} 
@@ -26,21 +27,11 @@
 \maketitle
 
 \begin{abstract}
-  This meta-paper describes the style to be used in articles and short papers
-  for SBC conferences. For papers in English, you should add just an abstract
-  while for the papers in Portuguese, we also ask for an abstract in
-  Portuguese (``resumo''). In both cases, abstracts should not have more than
-  10 lines and must be in the first page of the paper.
+				Games nowadays are increasingly present in society and have been reaching a large public, more and more people from different social classes, countries and among other factors are being included in the culture of electronic games. It is estimated that almost 60 percent of Americans play video games. Given this question, this work seeks to analyze data from a social network based on games (Steam) extracting information that can be valuable about the domain through mainly modeling the data through complex networks.
 \end{abstract}
      
 \begin{resumo} 
-  Este meta-artigo descreve o estilo a ser usado na confecção de artigos e
-  resumos de artigos para publicação nos anais das conferências organizadas
-  pela SBC. É solicitada a escrita de resumo e abstract apenas para os artigos
-  escritos em português. Artigos em inglês deverão apresentar apenas abstract.
-  Nos dois casos, o autor deve tomar cuidado para que o resumo (e o abstract)
-  não ultrapassem 10 linhas cada, sendo que ambos devem estar na primeira
-  página do artigo.
+				Jogos na atualidade estão cada vez mais presentes na sociedade e vem atingindo um grande público, cada vez mais pessoas de diversas classes sociais, paises e entre outros fatores estão sendo incluidos na cultura de jogos eletrônicos. Estima-se que quase 60 por cento dos americanos jogam videogames. Dado essa questão este trabalho busca análisar dados provenientes de uma rede social baseada em jogos (Steam) extraindo informações que podem ser valiosas sobre o domínio atráves principalmente de uma modelagem dos dados por meio de redes complexas.
 \end{resumo}
 
 
@@ -50,10 +41,13 @@ Jogos na atualidade estão cada vez mais presentes na sociedade e vem atingindo 
 
 Diversos métodos são usados para entender os comportamentos dos usuários nessas redes sociais baseadas em jogos (RSBJ), como por exemplo: pesquisas; entrevistas e análise de dados em grande escala. As entrevistas e pesquisas demonstram ter vantagens de serem capazes de entender os motivos e ponderar fatores demográficos, como sexo ou renda \cite{yee2006demographics,yee2006motivations}.
 
-Existem atualmente diversas bases de dados extremamente grandes, que podemos até mesmo denominar como Big Data, que podem ser usadas para extrair diversas informações sobre os usuários de jogos de uma maneira robusta. A rede social baseada em jogos mais popular atualmente é a Steam, ela prove uma API que possibilita a extração dos dados de usuários e jogos de sua base de dados \footnote{https://steamcommunity.com/dev}, assim possibilitando diversas possibilidades para manipulação e processamento desses dados de maneira que gere informações que podem ser interessantes sobre o dominio.
+Existem atualmente diversas bases de dados extremamente grandes, que podemos até mesmo denominar como Big Data, que podem ser usadas para extrair diversas informações sobre os usuários de jogos de uma maneira robusta. A rede social baseada em jogos mais popular atualmente é a Steam, ela prove uma API que possibilita a extração dos dados de usuários e jogos de sua base de dados \footnote{\url{https://steamcommunity.com/dev}\label{fn:steamapi}}, assim possibilitando diversas possibilidades para manipulação e processamento desses dados de maneira que gere informações que podem ser interessantes sobre o dominio.
 
-Então neste trabalho foi desenvolvido uma análise de redes sociais baseadas em jogos atráves de redes complexas, com isso foi capaz de inferir algumas informações sobre o dominio e seus usuários. A análise tem como principal foco usuários.
+Também é de conhecimento que sistemas diversos em vários domínios podem ser descritos como redes complexas, quando a estrutura de comunidade é uma propriedade topológica das redes \cite{albert2002statistical,radicchi2004defining}. Redes complexas irão auxiliar a diversos tipos de análises para extração de informações, que podem ser valiosas sobre o dóminio a ser estudado. Diversas técnicas ou métricas são interessantes de serem aplicadas em redes, como por exemplo: detecção de comunidades; métricas básicas (e.g. densidade); análise de distribuição de graus; centralidade; propagação e outros.
 
+Uma comunidade em uma rede é um grupo de vértices que possuem conexões mais densas com os membros do grupo do que as conexões com o restante da rede \cite{girvan2002community}. Então, detecção de comunidade consiste em identificar tais comunidades de uma rede a fim de revelar as informações valiosas de sua estrutura e funcionalidades \cite{li2020preliminary}. Por outro lado, modularidade é uma medida popular para a estrutura de redes, pois mede a força de divisão de uma rede em comunidades \cite{newman2006modularity,li2020preliminary}. Redes de alta modularidade têm conexões densas entre os vértices dentro das comunidades e conexões comparativamente esparsas entre vértices entre comunidades diferentes \cite{li2020preliminary}.
+
+Então, neste trabalho, foi desenvolvido uma análise de redes sociais baseadas em jogos atráves de principalmente uma modelagem por meio de redes complexas, com isso foi capaz de inferir algumas informações sobre o domínio.
 
 \section{Trabalhos relacionados} \label{sec:firstpage}
 
@@ -61,19 +55,51 @@ A Steam já vem sendo análisada em diversos estudos. Becker et al. analisa o pa
 
 \section{Coleta de dados}
 
+Para a coleta de dados foi utilizado a loja da Steam\footnote{\url{https://store.steampowered.com/}\label{fn:steamstore}} para obter informações sobre os jogos e \textit{reviews} sobre eles, assim como a Steam API\footref{fn:steamapi} para obtenção de jogos possuidos pelos usuários e relações sociais.
+
+A coleta de dados de usuários foi feita partindo de uma pré-seleção de alguns jogos populares que são diversos entre si em relação a suas categorias, os jogos selecionados foram: DOOM e Unturned.
 
 
+A partir dos jogos pré-selecionados foram coletados todos \textit{reviews} sobre eles, assim foi obtido usuários e suas respectivas revisões sobre os jogos. A partir dessas revisões foi feito a coleta das relações de amizades dos usuários e os jogos que eles possuem, alguns usuários possuem perfil com restrições na sua visualização então estes usuários foram eliminados na fase de análises.
 
-\section{Sections and Paragraphs}
+Os dados dos jogos foram obtidos atráves da loja da Steam\footref{fn:steamstore}, os dados obtidos foram: palavras-chave; preço; data de publicação e desenvolvedoras.
 
-Section titles must be in boldface, 13pt, flush left. There should be an extra
-12 pt of space before each title. Section numbering is optional. The first
-paragraph of each section should not be indented, while the first lines of
-subsequent paragraphs should be indented by 1.27 cm.
+A tabela \ref{tab:preselection1} mostra os dados dos jogos pré-selecionados.
 
-\subsection{Subsections}
+\begin{table}[ht]
+\centering
+\caption{Jogos pré-selecionados para coleta.}
+\label{tab:preselection1}
+\begin{tabular}{|l|l|l|l|}
+				\hline
+				Jogo & Data publicação & Genêro & Monetização \\\hline
+				DOOM & 13/5/2016  & Gore, Ação, Sci-fi, Single-player & R\$ 61,50 \\\hline
+				Unturned & 7/7/2017  & Sobrevivência, Zumbis, Multiplayer & Free to Play \\\hline
+\end{tabular}
+\end{table}
 
-The subsection titles must be in boldface, 12pt, flush left.
+É possível ver que um dos jogos tem uma base de jogadores maior, muito disso pode ser inferido que é devido a ser Multiplayer e Free to Play, e o outro já é um jogo que tem potencial de possuir um outro tipo de base de jogadores. No geral, espera-se que os usuários selecionados (dos jogos) consigam gerar boas representações da base de jogadores da Steam.
+
+
+\begin{table}[ht]
+\centering
+\caption{Dados obtidos dos jogos pré-selecionados.}
+\label{tab:datajogos}
+\begin{tabular}{|l|}
+				\hline
+				Jogo     \\\hline
+				DOOM     \\\hline
+				Unturned  \\\hline
+\end{tabular}
+\end{table}
+
+\section{Análise de dados}
+
+Para ser feito a análise, como dito anteriormente, algumas filtragens foram feitas. A primeira delas é a mais básica que vale para todas análises que é a filtragem de usuários que não estão aptos a terem seus dados coletados.
+
+\subsection{Modelagem dos dados com redes complexas}
+
+Na modelagem com redes complexas, para garantir o funcionamento dos algoritmos foi extraido a componente gigante do grafo para ser feito as análises.
 
 \section{Figures and Captions}\label{sec:figs}
 
