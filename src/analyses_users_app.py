@@ -3,6 +3,7 @@ import matplotlib.ticker as mtick
 import argparse
 import utils
 from scipy import *
+import os.path
 import igraph
 from tqdm import tqdm
 from tabulate import tabulate
@@ -15,6 +16,8 @@ import cdlib.algorithms
 import cdlib.evaluation
 import networkx
 import matplotlib.colors
+
+MDIR = 'data/'
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--apps',
@@ -92,28 +95,40 @@ if len(_buffer) > 0:
     _buffer = []
 
 del(g.vs['name'])
-exec_name = "_".join(sorted(args.apps))
-print("Graph created")
+exec_name = "_".join(sorted(args.apps)) + ('_giant' if args.giant else '')
+# print(exec_name)
+
+# print(os.path.join(MDIR,exec_name+'.txt'))
+log = open(os.path.join(MDIR,exec_name+'.txt'),'w+')
+log.write("Graph created\n")
 g = g.simplify()
 
 if args.giant:
     g = g.components(mode='weak').giant()
 
 
-print(tabulate([[k, v] for k, v in graph.get_graph_infos(g).items()]))
-# print(help(g.summary))
-print(g.summary())
+log.write(tabulate([[k, v] for k, v in graph.get_graph_infos(g).items()]))
+log.write('\n')
+log.write(tabulate([[k, v] for k, v in graph.get_graph_infos(g).items()], tablefmt="latex"))
+log.write('\n')
 
-# print(help(g.components))
-# print(giant.summary())
+# log.write(help(g.summary))
+log.write(g.summary())
+log.write('\n')
+
+# log.write(help(g.components))
+# log.write(giant.summary())
 # igraph.plot(giant, target=f'users_graph_app_{exec_name}.png',vertex_size=0.8,edge_width=0.8)
 
 # raise SystemExit
 
 fig = graph.plot_degree_distribution(g)
-fig.savefig(f'degree_distribution_app_{exec_name}.png')
+fname = f'degree_distribution_app_{exec_name}.png'
+fig.savefig(os.path.join(MDIR,fname))
 fig = graph.plot_degree_distribution(g, type_='log')
-fig.savefig(f'degree_distribution_log_app_{exec_name}.png')
+fname = f'degree_distribution_log_app_{exec_name}.png'
+fig.savefig(os.path.join(MDIR,fname))
+# fig.savefig()
 # fig = graph.plot_degree_distribution(g, type_='log')
 
 # popt, pcov= scipy.optimize.curve_fit(fit_function,xdata=values,ydata=counts)
@@ -124,12 +139,12 @@ fig.savefig(f'degree_distribution_log_app_{exec_name}.png')
 # line = ax.plot(values,list(map(lambda k: fit_function(k,*popt),values)),color='k')
 
 # s= f'Fitted line (${popt[1]:.3f}k^{{{popt[0]:.3f}}}$)'
-# print(s)
+# log.write(s)
 # ax.legend([s,'Collected data'])
 
 # subgraph_vs = (g.vs(name=m)[0].index for m in members)
 
-# print(communities.sizes())
+# log.write(communities.sizes())
 
 fig, ax = plt.subplots()
 # max_degree = max(g.degree())
@@ -145,7 +160,8 @@ counts = counts[idxs]
 ax.scatter(values, counts, facecolors='none', edgecolors='k')
 ax.set_xlabel('x')
 ax.set_ylabel('Probability(Degree$>=$x)')
-fig.savefig(f'degree_ccdf_distribution_log_app_{exec_name}.png')
+fname = f'degree_ccdf_distribution_log_app_{exec_name}.png'
+fig.savefig(os.path.join(MDIR,fname))
 
 
 
@@ -154,7 +170,7 @@ partition = cdlib.algorithms.louvain(netg, resolution=1.0, randomize=False)
 
 mod = cdlib.evaluation.newman_girvan_modularity(netg, partition)
 del netg
-print(mod)
+log.write(repr(mod)+'\n')
 
 
 fig, ax = plt.subplots()
@@ -168,28 +184,30 @@ ax.set_ylabel('Percentage of users cumulated')
 ax.set_xlabel('Community')
 ax.set_title(f'{exec_name}')
 ax.yaxis.set_major_formatter(mtick.PercentFormatter())
-fig.savefig(f'communities_num_app_{exec_name}.png')
+fname = f'communities_num_app_{exec_name}.png'
+fig.savefig(os.path.join(MDIR,fname))
 
-# print(partition.communities)
+# log.write(partition.communities)
 # communities=g.community_fastgreedy()
-# print(communities.membership())
-# print(communities.sizes())
-# print(type(communities))
+# log.write(communities.membership())
+# log.write(communities.sizes())
+# log.write(type(communities))
 num_communities = len(partition.communities)
 colors = [matplotlib.colors.to_hex(plt.get_cmap('gist_rainbow')(i/(num_communities-1))) for i in range(num_communities)]
 # mark_groups = {vertexes:color for color, vertexes in zip(colors,partition.communities)}
-# print(del g.vs['name'])
+# log.write(del g.vs['name'])
 # g.delete_vertex_attr('name')
 
 for color, vertexes in zip(colors, partition.communities):
     # if color == None:
-        # print("ewqokewqk")
-    # print(color)
+        # log.write("ewqokewqk")
+    # log.write(color)
     g.vs[vertexes]['color'] = color
-    # print(g.vs[vertexes]['color'])
+    # log.write(g.vs[vertexes]['color'])
 
+fname = f'users_graph_app_{exec_name}.png'
 igraph.plot(g,
-            target=f'users_graph_app_{exec_name}.png',
+            target=os.path.join(MDIR,fname),
             vertex_size=2.8,
             edge_width=0.8,
             mark_groups={
@@ -206,7 +224,7 @@ igraph.plot(g,
 
 # i = g.community_fastgreedy().as_clustering(5)
 
-# # print(len(i))
+# # log.write(len(i))
 # colors = ["#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00"]
 # g.vs['color'] = [None]
 # for clid, cluster in enumerate(i):
@@ -219,9 +237,10 @@ igraph.plot(g,
 
 # g = g.subgraph(subgraph_vs)
 # g = g.simplify()
-# # print(np.min(g.degree()))
-# # print(np.min(g.degree()))
+# # log.write(np.min(g.degree()))
+# # log.write(np.min(g.degree()))
 # # g.vs['label'] = g.degree()
 # igraph.plot(g, target=f'users_graph_app_wout_0{exec_name}.png',vertex_size=2.8,edge_width=2.0,
 # # layout=g.layout('drl')
 # )
+log.close()

@@ -67,7 +67,7 @@ for user in tqdm(
     if user['games'] != None:
         games |= set([g['appid'] for g in user['games']])
 
-apps_ids_updated ={i['appid'] for i in db.apps.find({'tags':{'$exists':True}})}
+apps_ids_updated ={i['appid'] for i in db.apps.find({'price':{'$exists':True}})}
 games = games - apps_ids_updated
 
 def get_app_tags(driver,app_id):
@@ -87,6 +87,22 @@ def get_app_tags(driver,app_id):
             tags.append(a.text.lstrip().rstrip())
         print(tags)
         data['tags'] = tags
+    data['price']=None 
+    tmp = soup.find(class_='game_purchase_price price')
+    if tmp != None:
+        # print(tmp)
+        if 'data-price-final' in tmp:
+            data['price']=int(tmp['data-price-final'])
+    data['release_date'] = None
+    t1= soup.find(class_='release_date')
+    if t1:
+        data['release_date']=t1.find(class_='date').text.lstrip().rstrip()
+    data['developers_list'] = []
+    try:
+        for dev in soup.find(id='developers_list').find_all('a'):
+            data['developers_list'].append(dev.text.lstrip().rstrip())
+    except:
+        pass
 
     return data
     # time.sleep(6)
@@ -102,12 +118,9 @@ apps_ids = list(games)
 try:
     driver = webdriver.Firefox(options=options)
     for app_id in tqdm(apps_ids):
-        # if int(app_id) == 570:
         data = get_app_tags(driver,app_id)
-        # print("EWQEWq")
+        print(data)
         db.apps.update_one({'appid':app_id},{"$set": data})
-        # print("EWQEWq")
-            # break
     driver.close()
 
 except:

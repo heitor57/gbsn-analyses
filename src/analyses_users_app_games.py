@@ -7,6 +7,8 @@ from scipy import *
 import igraph
 from tqdm import tqdm
 from tabulate import tabulate
+import os
+import os.path
 import matplotlib.pyplot as plt
 import scipy.optimize
 from sympy import *
@@ -25,7 +27,7 @@ parser.add_argument('--apps',
 parser.add_argument('--giant', action='store_true')
 args = parser.parse_args()
 
-exec_name = "_".join(sorted(args.apps))
+exec_name = "_".join(sorted(args.apps)) + ('_giant' if args.giant else '')
 # k,a = symbols('k a')
 # fit_function = k**a
 # lambda_fit_function = lambdify([k,a],fit_function)
@@ -34,6 +36,7 @@ db = utils.start_db()
 
 g = igraph.Graph(directed=False)
 
+apps = {i['appid']:i for i in db.apps.find()}
 
 appsid = [i['appid'] for i in db.apps.find({'name': {'$in': args.apps}})]
 uids = {
@@ -44,6 +47,7 @@ uids = {
 }
 uids = list(uids)
 game_counts = []
+prices_count = []
 for user in tqdm(
         db.users.find(
             {
@@ -57,29 +61,42 @@ for user in tqdm(
             }, {
                 '_id': 0,
                 # 'steamid': 1,
-                # 'games': 1,
+                'games': 1,
                 'game_count': 1,
             }).batch_size(10000)):
     # print(user['game_count'])
     if user['game_count'] == None:
-        user['game_count'] =0
+        user['game_count'] = 0
     game_counts.append(user['game_count'])
+
+    # games.extend([i['appid'] for i in user['games']])
+
+    if user['games'] != None:
+        for i in user['games']:
+            prices_count.append(int(i['price'])/100)
+    # games.extend(user['games'])
     # g.add_vertices(user['steamid'])
     # vertexes.add(user['steamid'])
 
+# list(map(lambda x: apps[x]['price'],games))
+
 fig, ax = plt.subplots()
-# print(game_counts)
-# max_degree = max(g.degree())
-# values, counts = np.unique(g.degree(), return_counts=True)
-# counts = np.cumsum(counts / np.sum(counts))
-# idxs = np.argsort(values)
-# values = values[idxs]
-# counts = counts[idxs]
 ax.set_yscale('log')
 ax.hist(game_counts, bins = int(180/5), color = 'blue',)
 ax.set_ylabel('Quantity')
 ax.set_xlabel('Number of games')
-ax.set_title(f'{" ".join(args.apps)}')
-fig.savefig(f'users_num_games_{exec_name}.png')
+# ax.set_title(f'{" ".join(args.apps)}')
+
+fname = f'users_num_games_{exec_name}.png'
+fig.savefig(os.path.join(MDIR,fname))
 
 
+fig, ax = plt.subplots()
+# ax.set_yscale('log')
+ax.hist(prices_count, bins = int(180/5), color = 'blue',)
+ax.set_ylabel('Frequência de preço')
+ax.set_xlabel('Preço')
+# ax.set_title(f'{" ".join(args.apps)}')
+
+fname = f'users_num_prices_{exec_name}.png'
+fig.savefig(os.path.join(MDIR,fname))

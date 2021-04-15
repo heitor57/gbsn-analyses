@@ -21,19 +21,28 @@ def get_graph_infos(g):
     infos['Density'] = g.density(loops=False)
     print("Computing Sparsity")
     infos['Sparsity'] = 1-g.density(loops=False)
+    print("Computing Girth")
+    infos['Girth'] = g.girth()
     # infos['c'] = transitivity_undirected
     # infos['density 2'] = 2*g.ecount()/((g.vcount()-1)*g.vcount())
     print("Computing Clustering coefficient")
     infos['Clustering coefficient'] = g.transitivity_avglocal_undirected(mode="zero")
+    print("Computing Eigenvector centrality")
+    infos['Eigenvector centrality']= np.mean(g.eigenvector_centrality())
+    # print("Computing 1")
+    # infos['Betweenness'] = np.mean(g.betweenness())
+    # print("Computing 2")
+    # infos['Closeness'] = np.mean(g.closeness())
+
+    # infos['Pagerank'] = np.mean(g.pagerank())
     # print("Computing Radius")
     # infos['Radius'] = g.radius()
     # print("Computing Diameter")
     # infos['Diameter'] = g.diameter()
-    print("Computing Girth")
-    infos['Girth'] = g.girth()
     return infos
 def plot_degree_distribution(g,type_=None):
-    fit_function = lambda k, a : k**a
+    fit_function = lambda k, a, b : b*k**a
+    # fit_function = lambda k, a : k**a
     fig, ax = plt.subplots()
     # max_degree = max(g.degree())
     values, counts = np.unique(g.degree(), return_counts=True)
@@ -52,13 +61,26 @@ def plot_degree_distribution(g,type_=None):
     counts = counts[d0]
 
     popt, pcov= scipy.optimize.curve_fit(fit_function,xdata=values,ydata=counts)
+    # print(pcov)
     # fitted_function = fit_function.subs(a, UnevaluatedExpr(popt[0]))
     # fitted_function = lambdify(k,fitted_function)
     # fitted_function = lambda k: k**popt[0]
 
     line = ax.plot(values,list(map(lambda k: fit_function(k,*popt),values)),color='k')
+    y = counts
+    x = values
+    y_fit = list(map(lambda k: fit_function(k,*popt),values))
+    ss_res = np.sum((y - y_fit) ** 2)
 
-    s= f'Fitted line ($k^{{{popt[0]:.3f}}}$)'
+    # total sum of squares
+    ss_tot = np.sum((y - np.mean(y)) ** 2)
+
+    # r-squared
+    r2 = 1 - (ss_res / ss_tot)
+
+    s= f'Fitted line (${{{popt[1]:.3f}}}*k^{{{popt[0]:.3f}}}$, $R^2$ = {r2:.6f})'
+
+    # s= f'Fitted line ($k^{{{popt[0]:.3f}}}$)'
     print(s)
     ax.legend([s,'Collected data'])
     # print(lambda_fit_function(1,2))
