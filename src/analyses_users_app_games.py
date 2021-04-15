@@ -1,4 +1,5 @@
 
+import matplotlib.dates as mdates
 import numpy as np
 import matplotlib.ticker as mtick
 import argparse
@@ -18,6 +19,7 @@ import cdlib.algorithms
 import cdlib.evaluation
 import networkx
 import matplotlib.colors
+MDIR = 'data/'
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--apps',
@@ -34,9 +36,11 @@ exec_name = "_".join(sorted(args.apps)) + ('_giant' if args.giant else '')
 
 db = utils.start_db()
 
+
 g = igraph.Graph(directed=False)
 
 apps = {i['appid']:i for i in db.apps.find()}
+# print(apps)
 
 appsid = [i['appid'] for i in db.apps.find({'name': {'$in': args.apps}})]
 uids = {
@@ -73,13 +77,17 @@ for user in tqdm(
 
     if user['games'] != None:
         for i in user['games']:
-            prices_count.append(int(i['price'])/100)
+            if i['appid'] in apps:
+                # print(apps[i['appid']]['price'])
+                if apps[i['appid']]['price'] != None:
+                    prices_count.append(int(apps[i['appid']]['price'])/100)
     # games.extend(user['games'])
     # g.add_vertices(user['steamid'])
     # vertexes.add(user['steamid'])
 
 # list(map(lambda x: apps[x]['price'],games))
 
+# print(prices_count)
 fig, ax = plt.subplots()
 ax.set_yscale('log')
 ax.hist(game_counts, bins = int(180/5), color = 'blue',)
@@ -96,7 +104,22 @@ fig, ax = plt.subplots()
 ax.hist(prices_count, bins = int(180/5), color = 'blue',)
 ax.set_ylabel('Frequência de preço')
 ax.set_xlabel('Preço')
-# ax.set_title(f'{" ".join(args.apps)}')
-
 fname = f'users_num_prices_{exec_name}.png'
 fig.savefig(os.path.join(MDIR,fname))
+
+
+fig, ax = plt.subplots()
+# ax.set_yscale('log')
+ax.hist(prices_count, bins = int(180/5), color = 'blue',)
+ax.set_ylabel('Frequência de preço')
+ax.set_xlabel('Preço')
+fname = f'users_num_prices_{exec_name}.png'
+fig.savefig(os.path.join(MDIR,fname))
+
+# fig, ax = plt.subplots()
+
+# locator = mdates.AutoDateLocator()
+# ax.xaxis.set_major_locator(locator)
+# ax.xaxis.set_major_formatter(mdates.AutoDateFormatter(locator))
+
+

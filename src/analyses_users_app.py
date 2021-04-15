@@ -58,10 +58,14 @@ for user in tqdm(
                 }
             }, {
                 '_id': 0,
-                'steamid': 1
+                'steamid': 1,
+                'games': 1,
             }).batch_size(10000)):
     g.add_vertices(user['steamid'])
     vertexes.add(user['steamid'])
+    g.vs[-1]["games"] = []
+    if user['games'] != None:
+        g.vs[-1][i['appid'] for i in user['games']]
 
 _buffer = []
 _buffer_max_size = 10000
@@ -198,6 +202,15 @@ colors = [matplotlib.colors.to_hex(plt.get_cmap('gist_rainbow')(i/(num_communiti
 # log.write(del g.vs['name'])
 # g.delete_vertex_attr('name')
 
+# partitions_sizes = list(map(len,partition.communities))
+
+# communities = [x for _, x in reversed(sorted(zip(partitions_sizes, partition.communities)))]
+
+# top_partitions = 5
+# for i in range(top_partitions):
+    # for db.users.find({''})
+    # communities[i]
+
 for color, vertexes in zip(colors, partition.communities):
     # if color == None:
         # log.write("ewqokewqk")
@@ -215,6 +228,8 @@ igraph.plot(g,
                 for color, vertexes in zip(colors, partition.communities)
             }
             )
+
+
 
 # subgraph_vs = g.vs.select(lambda vertex: vertex.degree() > 5)
 # g = g.subgraph(subgraph_vs)

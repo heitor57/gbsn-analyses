@@ -80,6 +80,7 @@ def get_app_tags(driver,app_id):
     tags = []
     tp = soup.find(class_='glance_tags_ctn popular_tags_ctn')
     data = dict()
+    data['appid'] = app_id
     data['tags'] = None
     if tp != None:
         for a in tp.find_all('a'):
@@ -119,8 +120,10 @@ try:
     driver = webdriver.Firefox(options=options)
     for app_id in tqdm(apps_ids):
         data = get_app_tags(driver,app_id)
-        print(data)
-        db.apps.update_one({'appid':app_id},{"$set": data})
+        print(app_id,data)
+        # print()
+        r= db.apps.update_one({'appid':app_id},{"$set": data},True)
+        print(r.raw_result)
     driver.close()
 
 except:
