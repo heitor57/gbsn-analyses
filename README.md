@@ -1,6 +1,5 @@
 # Game-based Social Network Analyses
-Steam can be seen as a Game-based Social Network and this repository crawled from it informations to analyse it using statistics and complex network techniques.
-
+Steam can be seen as a game-based social network and this repository contains the source code of the crawler and analysis using complex networks techniques and statistics.
 
 **Abstract of the work:** Games nowadays are increasingly present in society and have been
 reaching a large public, more and more people from different social classes,
